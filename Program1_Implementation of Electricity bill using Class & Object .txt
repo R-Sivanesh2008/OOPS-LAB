@@ -1,75 +1,83 @@
+PROGRAM
+
 import java.util.Scanner;
 
-public class ElectBill
-{
-    public static void main(String[] args)
-    {
-        Consumer ob = new Consumer();
-        ob.Getdata();
-        ob.Calc();
-        ob.Display();
-    }
-}
-
-class Consumer
-{
-    Scanner in = new Scanner(System.in);
-    Scanner ins = new Scanner(System.in);
+class Consumer {
     int cno;
-    String cname, type_of_conn;
-    double pre_reading, curr_reading, unit_consumed, tbill;
+    String cname, type;
+    double previous, current, units, bill;
 
-    void Getdata()
-    {
+    void getData() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter Consumer number: ");
+        cno = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Enter Consumer name: ");
+        cname = sc.nextLine();
+
+        System.out.print("Enter type of connection (domestic/commercial): ");
+        type = sc.nextLine().toLowerCase();
+
+        System.out.print("Enter previous month reading: ");
+        previous = sc.nextDouble();
+
+        System.out.print("Enter current month reading: ");
+        current = sc.nextDouble();
+
+        units = current - previous;
     }
 
-    void Calc()
-    {
-        System.out.print("\n\t Enter Consumer number = ");
-        cno = in.nextInt();
-
-        System.out.print("\n\t Enter Consumer name = ");
-        cname = ins.nextLine();
-
-        System.out.print("\n\t Enter the type of connection = ");
-        type_of_conn = ins.nextLine();
-
-        System.out.print("\n\t Enter pre_month reading = ");
-        pre_reading = in.nextDouble();
-
-        System.out.print("\n\t Enter current_month reading = ");
-        curr_reading = in.nextDouble();
-
-        unit_consumed = curr_reading - pre_reading;
-
-        if(type_of_conn.contains("domestic"))
-        {
-            if (unit_consumed <= 100)
-                tbill = 1 * unit_consumed;
-            else if (unit_consumed > 100 && unit_consumed <= 200)
-                tbill = 2.50 * unit_consumed;
-            else if (unit_consumed > 200 && unit_consumed <= 500)
-                tbill = 4 * unit_consumed;
+    void calculate() {
+        if (type.equals("domestic")) {
+            if (units <= 100)
+                bill = units * 1;
+            else if (units <= 200)
+                bill = units * 2.50;
+            else if (units <= 500)
+                bill = units * 4;
             else
-                tbill = 6 * unit_consumed;
+                bill = units * 6;
         }
-        else if(type_of_conn.contains("commercial"))
-        {
-            if (unit_consumed <= 100)
-                tbill = 2 * unit_consumed;
-            else if (unit_consumed > 100 && unit_consumed <= 200)
-                tbill = 4.50 * unit_consumed;
-            else if (unit_consumed > 200 && unit_consumed <= 500)
-                tbill = 6 * unit_consumed;
+        else if (type.equals("commercial")) {
+            if (units <= 100)
+                bill = units * 2;
+            else if (units <= 200)
+                bill = units * 4.50;
+            else if (units <= 500)
+                bill = units * 6;
             else
-                tbill = 7 * unit_consumed;
+                bill = units * 7;
+        }
+        else {
+            System.out.println("Invalid connection type");
         }
     }
 
-    void Display()
-    {
-        System.out.println("\n\t Customer name = " + cname);
-        System.out.println("\n\t Total units = " + unit_consumed);
-        System.out.println("\n\t Total bill = Rs " + tbill);
+    void display() {
+        System.out.println("Customer Name = " + cname);
+        System.out.println("Total Units = " + units);
+        System.out.println("Total Bill = Rs " + bill);
     }
 }
+
+public class ElectBill {
+    public static void main(String[] args) {
+        Consumer ob = new Consumer();
+        ob.getData();
+        ob.calculate();
+        ob.display();
+    }
+}
+
+OUTPUT
+
+Enter Consumer number: 102
+Enter Consumer name: Raghav
+Enter type of connection (domestic/commercial): domestic
+Enter previous month reading: 150
+Enter current month reading: 800
+Customer Name = Raghav
+Total Units = 650.0
+Total Bill = Rs 3900.0
