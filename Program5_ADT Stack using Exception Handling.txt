@@ -1,106 +1,60 @@
-import java.io.*;
+PROGRAM
 
-interface Mystack
-{
-    public void pop();
-    public void push();
-    public void display();
+import java.util.Scanner;
+
+abstract class Shape {
+    int x, y;
+
+    abstract void printArea();
 }
 
-class Stack_array implements Mystack
-{
-    final static int n = 5;
-    int stack[] = new int[n];
-    int top = -1;
-
-    public void push()
-    {
-        try
-        {
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-            if(top == (n - 1))
-            {
-                System.out.println("Stack Overflow");
-                return;
-            }
-            else
-            {
-                System.out.println("Enter the element");
-                int ele = Integer.parseInt(br.readLine());
-                stack[++top] = ele;
-            }
-        }
-        catch(IOException e)
-        {
-            System.out.println("e");
-        }
-    }
-
-    public void pop()
-    {
-        if(top < 0)
-        {
-            System.out.println("Stack underflow");
-            return;
-        }
-        else
-        {
-            int popper = stack[top];
-            top--;
-            System.out.println("Popped element:" + popper);
-        }
-    }
-
-    public void display()
-    {
-        if(top < 0)
-        {
-            System.out.println("Stack is empty");
-            return;
-        }
-        else
-        {
-            String str = " ";
-            for(int i = 0; i <= top; i++)
-                str = str + " " + stack[i] + " <--";
-
-            System.out.println("Elements are:" + str);
-        }
+class Rectangle extends Shape {
+    void printArea() {
+        System.out.println("Area of Rectangle is " + (x * y));
     }
 }
 
-public class StackADT
-{
-    public static void main(String arg[]) throws IOException
-    {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        System.out.println("Implementation of Stack using Array");
-        Stack_array stk = new Stack_array();
-        int ch = 0;
-
-        do
-        {
-            System.out.println("1.Push 2.Pop 3.Display 4.Exit");
-            System.out.println("Enter your choice:");
-            ch = Integer.parseInt(br.readLine());
-
-            switch(ch)
-            {
-                case 1:
-                    stk.push();
-                    break;
-                case 2:
-                    stk.pop();
-                    break;
-                case 3:
-                    stk.display();
-                    break;
-                case 4:
-                    System.exit(0);
-            }
-        }
-        while(ch < 5);
+class Triangle extends Shape {
+    void printArea() {
+        System.out.println("Area of Triangle is " + ((x * y) / 2.0));
     }
 }
+
+class Circle extends Shape {
+    void printArea() {
+        System.out.println("Area of Circle is " + ((22.0 * x * x) / 7));
+    }
+}
+
+public class Shapes {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter values:");
+        int x = sc.nextInt();
+        int y = sc.nextInt();
+
+        Rectangle r = new Rectangle();
+        r.x = x;
+        r.y = y;
+        r.printArea();
+
+        Triangle t = new Triangle();
+        t.x = x;
+        t.y = y;
+        t.printArea();
+
+        Circle c = new Circle();
+        c.x = x;
+        c.printArea();
+    }
+}
+
+OUTPUT
+
+Enter values:
+7
+8
+Area of Rectangle is 56
+Area of Triangle is 28.0
+Area of Circle is 154.0
