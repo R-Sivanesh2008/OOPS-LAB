@@ -1,47 +1,91 @@
-public class WrapperClassDemo
-{
-    public static void main(String[] args)
-    {
-        int primitiveInt = 100;
-        float primitiveFloat = 25.75f;
-        char primitiveChar = 'A';
-        boolean primitiveBoolean = true;
+PROGRAM
 
-        Integer wrappedInt = primitiveInt;
-        Float wrappedFloat = primitiveFloat;
-        Character wrappedChar = primitiveChar;
-        Boolean wrappedBoolean = primitiveBoolean;
+import java.util.Random;
 
-        System.out.println("Autoboxed Integer: " + wrappedInt);
-        System.out.println("Autoboxed Float: " + wrappedFloat);
-        System.out.println("Autoboxed Character: " + wrappedChar);
-        System.out.println("Autoboxed Boolean: " + wrappedBoolean);
+class Even implements Runnable {
+    int x;
 
-        int unboxedInt = wrappedInt;
-        float unboxedFloat = wrappedFloat;
-        char unboxedChar = wrappedChar;
-        boolean unboxedBoolean = wrappedBoolean;
+    Even(int x) {
+        this.x = x;
+    }
 
-        System.out.println("Unboxed int: " + unboxedInt);
-        System.out.println("Unboxed float: " + unboxedFloat);
-        System.out.println("Unboxed char: " + unboxedChar);
-        System.out.println("Unboxed boolean: " + unboxedBoolean);
-
-        String intString = "300";
-        Integer parsedInt = Integer.parseInt(intString);
-
-        String floatString = "75.25";
-        Float parsedFloat = Float.parseFloat(floatString);
-
-        String charString = "C";
-        Character parsedChar = charString.charAt(0);
-
-        String booleanString = "true";
-        Boolean parsedBoolean = Boolean.parseBoolean(booleanString);
-
-        System.out.println("Parsed and autoboxed Integer: " + parsedInt);
-        System.out.println("Parsed and autoboxed Float: " + parsedFloat);
-        System.out.println("Parsed and autoboxed Character: " + parsedChar);
-        System.out.println("Parsed and autoboxed Boolean: " + parsedBoolean);
+    public void run() {
+        System.out.println(
+            "New Thread " + x +
+            " is EVEN and Square of " + x +
+            " is: " + (x * x)
+        );
     }
 }
+
+class Odd implements Runnable {
+    int x;
+
+    Odd(int x) {
+        this.x = x;
+    }
+
+    public void run() {
+        System.out.println(
+            "New Thread " + x +
+            " is ODD and Cube of " + x +
+            " is: " + (x * x * x)
+        );
+    }
+}
+
+class NumberGenerator extends Thread {
+    public void run() {
+        Random random = new Random();
+
+        for (int i = 0; i < 5; i++) {
+            int num = random.nextInt(100);
+
+            System.out.println(
+                "Main Thread and Generated Number is " + num
+            );
+
+            if (num % 2 == 0) {
+                Thread t = new Thread(new Even(num));
+                t.start();
+            }
+            else {
+                Thread t = new Thread(new Odd(num));
+                t.start();
+            }
+
+            try {
+                Thread.sleep(1000);
+            }
+            catch (InterruptedException e) {
+                System.out.println("Thread interrupted");
+            }
+        }
+    }
+}
+
+public class ThreadProgram {
+    public static void main(String[] args) {
+        NumberGenerator thread = new NumberGenerator();
+        thread.start();
+    }
+}
+
+OUTPUT
+
+Main Thread and Generated Number is 10
+New Thread 10 is EVEN and Square of 10 is: 100
+
+Main Thread and Generated Number is 14
+New Thread 14 is EVEN and Square of 14 is: 196
+
+Main Thread and Generated Number is 83
+New Thread 83 is ODD and Cube of 83 is: 571787
+
+Main Thread and Generated Number is 1
+New Thread 1 is ODD and Cube of 1 is: 1
+
+Main Thread and Generated Number is 20
+New Thread 20 is EVEN and Square of 20 is: 400
+
+(Note: The generated numbers will change each time because Random is used.)
